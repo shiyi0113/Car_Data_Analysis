@@ -2,10 +2,12 @@ import os
 from data_loader import data_load
 from data_cleaner import data_clean,data_save
 from data_analysis import basic_statistics
+from data_visualization import create_distribution_plots
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 data_file = os.path.join(BASE_DIR, '..', 'data', 'Car_Sales_data.csv')
 clean_file = os.path.join(BASE_DIR, '..', 'data', 'Cleaned_Car_Sales_data.csv')
+output_dir = os.path.join(BASE_DIR,'..','charts')
 
 def run_project():
     """
@@ -26,6 +28,7 @@ def run_project():
     # 3. 基础数据分析
     numeric_cols, categorical_cols = basic_statistics(df_clean)
     # 4. 后续操作
+    create_distribution_plots(df_clean, numeric_cols, output_dir)
     print("\n*** 分析流程结束 ***")
 
 if __name__ == "__main__":
