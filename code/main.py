@@ -28,7 +28,7 @@ def run_project():
     # 3. 基础数据分析
     numeric_cols, categorical_cols = basic_statistics(df_clean)
     # 4. 后续操作
-    create_distribution_plots(df_clean, numeric_cols, output_dir)
+    create_distribution_plots(df_clean, output_dir)
     print("\n*** 分析流程结束 ***")
 
 if __name__ == "__main__":

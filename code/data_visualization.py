@@ -7,7 +7,6 @@ from scipy import stats
 def setup_matplotlib_for_plotting():
     # warnings.filterwarnings('default') 
     plt.switch_backend("Agg") # 绘图后端（backend）切换为 "Agg"
-
     plt.style.use("seaborn-v0_8") # 使用 Matplotlib 内置的 "seaborn-v0_8" 风格
     sns.set_palette("husl")       # 将调色板设置为 "husl"
     
@@ -15,38 +14,45 @@ def setup_matplotlib_for_plotting():
     plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "方正黑体", "SimHei", "黑体", "Arial Unicode MS"]
     plt.rcParams["axes.unicode_minus"] = False # 将负号的 Unicode 处理关闭
 
-def create_distribution_plots(df, numeric_cols, output_dir):
+def create_distribution_plots(df, output_dir):
     """
     创建数据分布图
 
+    Args:
+        df(pd.DataFrame):经过清洗后的数据集。
+        output_dir(str):输出文件路径
+    Returns:
+        None
     """
     print("="*60)
     print("数据分布可视化")
     print("="*60)
     setup_matplotlib_for_plotting()  # 基础绘图配置
+    # 创建文件夹
     os.makedirs(output_dir, exist_ok=True)
 
     # 1. 价格分布图
     if 'price' in df.columns:
+        # 创建一个大图，其中包含4个子图
         fig, axes = plt.subplots(2, 2, figsize=(15, 12))
         fig.suptitle('汽车价格分析', fontsize=16, fontweight='bold')
         
-        # 价格直方图
-        axes[0, 0].hist(df['price'].dropna(), bins=50, alpha=0.7, color='skyblue', edgecolor='black')
+        # 左上：价格直方图
+        axes[0, 0].hist(df['price'].dropna(), bins=50, alpha=0.7, color='skyblue', edgecolor='black',rwidth = 0.5)
         axes[0, 0].set_title('汽车价格分布')
         axes[0, 0].set_xlabel('价格 ($)')
         axes[0, 0].set_ylabel('频数')
         
-        # 价格箱线图
+        # 右上：价格箱线图
         axes[0, 1].boxplot(df['price'].dropna())
         axes[0, 1].set_title('汽车价格箱线图')
         axes[0, 1].set_ylabel('价格 ($)')
         
-        # 价格Q-Q图
+        # 左下：价格Q-Q图
         stats.probplot(df['price'].dropna(), dist="norm", plot=axes[1, 0])
         axes[1, 0].set_title('价格正态性检验 (Q-Q图)')
         
-        # 价格统计信息
+        # 右下：价格统计信息
         axes[1, 1].text(0.1, 0.8, f'平均价格: ${df["price"].mean():.2f}', transform=axes[1, 1].transAxes, fontsize=12)
         axes[1, 1].text(0.1, 0.7, f'中位数价格: ${df["price"].median():.2f}', transform=axes[1, 1].transAxes, fontsize=12)
         axes[1, 1].text(0.1, 0.6, f'标准差: ${df["price"].std():.2f}', transform=axes[1, 1].transAxes, fontsize=12)
