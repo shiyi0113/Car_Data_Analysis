@@ -1,7 +1,6 @@
-import pandas as pd
-import numpy as np
 import os
 import re 
+import pandas as pd
 
 def data_clean(df):
     """
@@ -77,7 +76,7 @@ def data_clean(df):
     initial_rows = len(df_cleaned)
     df_cleaned.drop_duplicates(inplace=True)
     rows_dropped = initial_rows - len(df_cleaned)
-    print(f"✅ 重复数据处理: 删除 {rows_dropped} 行重复数据。当前行数: {len(df_cleaned)}")
+    print(f"重复数据处理: 删除 {rows_dropped} 行重复数据。当前行数: {len(df_cleaned)}")
 
     # --- 4. 数据类型转换 ---
     print("\n--- 4. 数据类型转换 ---")
